@@ -1,1 +1,1 @@
-# covid-vaccine-api
+# COVID-19 Vaccination API 
