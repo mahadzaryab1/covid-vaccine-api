@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+    web:
+        build: .
+        container_name: "covid-vaccine-api"
+        # environment: 
+        ports:
+            - "8080:8080"
