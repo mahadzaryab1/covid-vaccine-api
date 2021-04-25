@@ -36,7 +36,35 @@ func readCSV(csvUrl string) ([][]string, error) {
 	}
 
 	return data, nil
+}
 
+func getAllVaccinesResponse(data [][]string) VaccineEntries {
+	response := VaccineEntries{VaccineData: make([]VaccineEntry, 0)}
+	for idx, row := range data {
+		if idx == 0 {
+			continue
+		}
+
+		totalVaccinations, _ := strconv.Atoi(row[4])
+		totalPeopleVaccinated, _ := strconv.Atoi(row[5])
+		totalPeopleFullyVaccinated, _ := strconv.Atoi(row[6])
+		fullyVaccinatedPercentage := float32(0)
+		if totalPeopleVaccinated > 0 {
+			fullyVaccinatedPercentage = (float32(totalPeopleFullyVaccinated) / float32(totalPeopleVaccinated)) * 100
+		}
+
+		currEntry := VaccineEntry{
+			Date:                       row[1],
+			TotalVaccinations:          totalVaccinations,
+			TotalPeopleVaccinated:      totalPeopleVaccinated,
+			TotalPeopleFullyVaccinated: totalPeopleFullyVaccinated,
+			FullyVaccinatedPercentage:  fullyVaccinatedPercentage,
+		}
+
+		response.VaccineData = append(response.VaccineData, currEntry)
+	}
+
+	return response
 }
 
 func healthHandler(w http.ResponseWriter, r *http.Request) {
@@ -65,30 +93,7 @@ func vaccineDataHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := VaccineEntries{VaccineData: make([]VaccineEntry, 0)}
-	for idx, row := range data {
-		if idx == 0 {
-			continue
-		}
-
-		totalVaccinations, _ := strconv.Atoi(row[4])
-		totalPeopleVaccinated, _ := strconv.Atoi(row[5])
-		totalPeopleFullyVaccinated, _ := strconv.Atoi(row[6])
-		fullyVaccinatedPercentage := float32(0)
-		if totalPeopleVaccinated > 0 {
-			fullyVaccinatedPercentage = (float32(totalPeopleFullyVaccinated) / float32(totalPeopleVaccinated)) * 100
-		}
-
-		currEntry := VaccineEntry{
-			Date:                       row[1],
-			TotalVaccinations:          totalVaccinations,
-			TotalPeopleVaccinated:      totalPeopleVaccinated,
-			TotalPeopleFullyVaccinated: totalPeopleFullyVaccinated,
-			FullyVaccinatedPercentage:  fullyVaccinatedPercentage,
-		}
-
-		response.VaccineData = append(response.VaccineData, currEntry)
-	}
+	response := getAllVaccinesResponse(data)
 
 	jsonBytes, err := json.Marshal(response)
 	if err != nil {
