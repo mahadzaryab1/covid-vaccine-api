@@ -5,6 +5,7 @@ services:
         build: .
         container_name: "covid-vaccine-api"
         environment: 
-            - CANADA_VACCINES_URL=https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/country_data/Canada.csv 
+            - CANADA_VACCINES_URL=https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/country_data/Canada.csv
+            - PORT=8080 
         ports:
             - "8080:8080"
