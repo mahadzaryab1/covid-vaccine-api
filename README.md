@@ -9,7 +9,7 @@ I built a simple REST API that provides data on Canada's COVID-19 vaccination ef
 ## Running the API locally
 The app has been dockerized and is relatively easy to get running on your local machine. Simply run the following two commands to get the API up and running on your local machine: 
 ```bash
-docker-commpose build # build the application
+docker-compose build # build the application
 docker-compose up # start the application
 ```
 
