@@ -5,6 +5,17 @@ import (
 	"net/http"
 )
 
+type VaccineEntry struct {
+	Date                       string `json:"date"`
+	TotalVaccinations          int    `json:"total_vaccinations"`
+	TotalPeopleVaccinated      int    `json:"total_people_vaccinated"`
+	TotalPeopleFullyVaccinated int    `json:"total_people_fully_vaccinated"`
+}
+
+type VaccineEntries struct {
+	VaccineData []VaccineEntry `json:"vaccine_data"`
+}
+
 func healthHandler(w http.ResponseWriter, r *http.Request) {
 	response := map[string]string{
 		"status": "Healthy!",
