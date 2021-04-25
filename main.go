@@ -8,6 +8,8 @@ import (
 	"strconv"
 )
 
+const CANADA_POPULATION = 37057765
+
 type VaccineEntry struct {
 	Date                       string  `json:"date"`
 	TotalVaccinations          int     `json:"total_vaccinations"`
@@ -39,6 +41,7 @@ func readCSV(csvUrl string) ([][]string, error) {
 }
 
 func getAllVaccinesResponse(data [][]string) VaccineEntries {
+
 	response := VaccineEntries{VaccineData: make([]VaccineEntry, 0)}
 	for idx, row := range data {
 		if idx == 0 {
@@ -50,7 +53,7 @@ func getAllVaccinesResponse(data [][]string) VaccineEntries {
 		totalPeopleFullyVaccinated, _ := strconv.Atoi(row[6])
 		fullyVaccinatedPercentage := float32(0)
 		if totalPeopleVaccinated > 0 {
-			fullyVaccinatedPercentage = (float32(totalPeopleFullyVaccinated) / float32(totalPeopleVaccinated)) * 100
+			fullyVaccinatedPercentage = (float32(totalPeopleFullyVaccinated) / float32(CANADA_POPULATION)) * 100
 		}
 
 		currEntry := VaccineEntry{
