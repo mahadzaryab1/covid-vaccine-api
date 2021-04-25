@@ -107,9 +107,33 @@ func vaccineDataHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonBytes)
 }
 
+func latestVaccineDataHandler(w http.ResponseWriter, r *http.Request) {
+	requestURL := os.Getenv("CANADA_VACCINES_URL")
+	data, err := readCSV(requestURL)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	response := getAllVaccinesResponse(data)
+
+	jsonBytes, err := json.Marshal(response.VaccineData[len(response.VaccineData)-1])
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	w.Header().Add("content-type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(jsonBytes)
+}
+
 func main() {
 	http.HandleFunc("/health", healthHandler)
 	http.HandleFunc("/vaccine_data", vaccineDataHandler)
+	http.HandleFunc("/vaccine_data/latest", latestVaccineDataHandler)
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		panic(err)
