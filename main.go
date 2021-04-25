@@ -134,7 +134,7 @@ func main() {
 	http.HandleFunc("/health", healthHandler)
 	http.HandleFunc("/vaccine_data", vaccineDataHandler)
 	http.HandleFunc("/vaccine_data/latest", latestVaccineDataHandler)
-	err := http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 	if err != nil {
 		panic(err)
 	}
