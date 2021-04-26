@@ -19,3 +19,29 @@ To verify that the app is running as expected, make a GET request to http://loca
     "status": "Healthy!"
 }
 ```
+## Endpoints 
+### GET /vaccine_data/latest
+Provides a snapshot of the most recent vaccination numbers: 
+```json
+{
+    "date": "2021-04-25",
+    "total_vaccinations": 12045041,
+    "total_people_vaccinated": 11026753,
+    "total_people_fully_vaccinated": 1018288,
+    "percentage_fully_vaccinated": 2.74784
+}
+```
+### GET /vaccine_data
+Provides all the daily available data since the start of Canada's vaccination efforts:
+```json
+"vaccine_data": [
+    {
+        "date": "2020-12-14",
+        "total_vaccinations": 5,
+        "total_people_vaccinated": 0,
+        "total_people_fully_vaccinated": 0,
+        "percentage_fully_vaccinated": 0
+    }, ...
+]
+```
+
